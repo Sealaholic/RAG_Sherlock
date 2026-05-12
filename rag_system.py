@@ -151,7 +151,7 @@ class RagSystem:
 
         # Calculate cos similarity [0,1]
         similarities = cosine_similarity(query_vector, self.doc_vectors).flatten()
-        print(f"\nSimilarities: {similarities}")
+        # print(f"\nSimilarities: {similarities}")
 
         valid_index = np.where(similarities > similarity_threshold)[0]
         # Arrange similarity ascending
