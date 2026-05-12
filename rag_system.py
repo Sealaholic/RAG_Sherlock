@@ -194,7 +194,7 @@ class RagSystem:
             If the answer is not found, say:
             "I could not find enough information."
 
-            Always cite sources like [Source 1].
+            Cite sources from exact paragraphs.
 
             Context:
             {context}

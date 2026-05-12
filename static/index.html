@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sherlock RAG Assistant</title>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #0f0f0f;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh;
+  }
+
+  .container {
+    width: 90%;
+    max-width: 900px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 32px;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #aaaaaa;
+    margin-bottom: 20px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 120px;
+
+    background-color: #1e1e1e;
+    color: white;
+
+    border: 1px solid #333;
+    border-radius: 12px;
+
+    padding: 16px;
+    font-size: 16px;
+
+    resize: vertical;
+    outline: none;
+  }
+
+  textarea:focus {
+    border-color: #666;
+  }
+
+  button {
+    align-self: center;
+
+    background-color: #ffffff;
+    color: black;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 12px 24px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+  }
+
+  button:hover {
+    background-color: #dddddd;
+  }
+
+  #answer {
+    background-color: #1a1a1a;
+
+    border: 1px solid #333;
+    border-radius: 12px;
+
+    padding: 20px;
+
+    min-height: 180px;
+
+    white-space: pre-wrap;
+    line-height: 1.6;
+
+    overflow-wrap: break-word;
+  }
+
+  .loading {
+    color: #999;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <h1>Sherlock Holmes RAG Assistant</h1>
+
+    <div class="subtitle">
+      Ask questions about Sherlock Holmes stories using AI-powered retrieval.
+    </div>
+
+    <textarea
+      id="question"
+      placeholder="Example: Who is Professor Moriarty?"
+    ></textarea>
+
+    <button onclick="askQuestion()">Ask</button>
+
+    <div id="answer">
+      Your answer will appear here.
+    </div>
+
+  </div>
+    <script>
+        async function askQuestion() {
+
+        const question = document.getElementById("question").value;
+        const answerDiv = document.getElementById("answer");
+
+        if (!question.trim()) {
+            answerDiv.innerHTML = "Please enter a question.";
+            return;
+        }
+
+        answerDiv.innerHTML = `
+            <div class="loading">
+            Sherlock Holmes is thinking...
+            </div>
+        `;
+
+        try {
+
+            const response = await fetch("/ask", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: question
+            })
+            });
+
+            const data = await response.json();
+
+            answerDiv.innerHTML = `
+            <strong>Answer:</strong><br><br>
+            ${data.answer}
+            `;
+
+        } catch (error) {
+
+            answerDiv.innerHTML = `
+            <span style="color:red;">
+                Error: ${error.message}
+            </span>
+            `;
+        }
+        }
+    </script>
+</body>
+</html>
