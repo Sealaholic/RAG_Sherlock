@@ -22,7 +22,6 @@ A Retrieval-Augmented Generation (RAG) system built with Python for semantic sea
 
 ```bash
 docs/           # Sherlock Holmes text files
-cache/          # Cached vectors and chunks
 rag_system.py   # Main RAG pipeline
 ```
 
